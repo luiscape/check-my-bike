@@ -6,3 +6,6 @@ setup:
 
 build:
 	bash bin/build.sh;
+
+setup_server:
+	bash bin/setup_server.sh;
