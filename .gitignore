@@ -1,0 +1,8 @@
+venv/*
+venv/**
+data/historic/*
+data/historic/**
+
+
+
+*.sqlite
