@@ -22,7 +22,11 @@ def CreateDbAndTable(table_name=None, verbose=True):
   # all fields are text. Better schemas
   # should be provided in the config files.
   #
-  schema = ["'tripduration'","'starttime'","'stoptime'","'start station id'","'start station name'","'start station latitude'","'start station longitude'","'end station id'","'end station name'","'end station latitude'","'end station longitude'","'bikeid'","'usertype'","'birth year'","'gender'"]
+  schemas = {
+    'trip': ["'tripduration'","'starttime'","'stoptime'","'start station id'","'start station name'","'start station latitude'","'start station longitude'","'end station id'","'end station name'","'end station latitude'","'end station longitude'","'bikeid'","'usertype'","'birth year'","'gender'"],
+    'station': ["id", "stationName", "availableDocks", "totalDocks", "latitude", "longitude", "statusValue", "statusKey", "availableBikes", "stAddress1", "stAddress2", "city", "postalCode", "location", "altitude", "testStation", "lastCommunicationTime", "landMark", "executionTime"]
+  }
+  schema = schemas[table_name]
   statement = " TEXT, ".join(schema)
   statement = 'CREATE TABLE IF NOT EXISTS %s(%s TEXT)' % (table_name, statement)
 
@@ -36,4 +40,3 @@ def CreateDbAndTable(table_name=None, verbose=True):
     if verbose:
       print e
     return False
-
