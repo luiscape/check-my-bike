@@ -10,3 +10,10 @@ wget https://bootstrap.pypa.io/get-pip.py
 python get-pip.py
 rm get-pip.py
 pip install virtualenv
+
+
+#
+# Add cronjob configuration.
+#
+printf "Installing crontab.\n"
+crontab -l | { cat; echo "*/1 * * * * bash ~/check-my-bike/bin/collect_station.sh"; } | crontab -
