@@ -1,3 +1,5 @@
 #!/bin/bash
 
-printf 'nothing to run yet.\n'
+cd check-my-bike
+source venv/bin/activate
+python app scheduler
