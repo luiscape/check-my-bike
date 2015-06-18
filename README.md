@@ -29,3 +29,16 @@ $ make setup
 ```
 $ make test
 ```
+
+
+## Secrets
+The [`config/secrets.json`](config/secrets.json) file should contain both information about the Pushbullets API and the Mailgun API. The file should look like this:
+
+```json
+{
+  "pushbullet_key": "YOUR_PUSHBULLET_KEY",
+  "mailgun_key": "YOUR_MAILGUN_KEY",
+  "mailgun_domain": "YOUR_MAILGUN_DOMAIN"
+}
+
+```
