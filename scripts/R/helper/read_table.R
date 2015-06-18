@@ -30,7 +30,11 @@ ReadTable <- function(table_name = NULL,
   #
   # Create database and establish connection.
   #
-  db_name <- paste0(db, ".sqlite")
+  deployPath <- function(p=NULL, d=TRUE, wd="~/check-my-bike/") {
+    if (d) return(paste0(wd, p))
+    else return(p)
+  }
+  db_name <- paste0(deployPath(db), ".sqlite")
   db <- dbConnect(SQLite(), dbname = db_name)
 
   #
