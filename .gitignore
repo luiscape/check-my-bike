@@ -2,8 +2,7 @@ venv/*
 venv/**
 data/historic/*
 data/historic/**
-
-
+config/secrets.json
 
 *.sqlite
 *.sqlite-journal
