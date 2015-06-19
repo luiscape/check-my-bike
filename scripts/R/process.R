@@ -62,7 +62,7 @@ ProcessData <- function() {
   # Load.
   #
   cat('Loading data | ')
-  data <- ReadTable('station', deploy=FALSE)
+  data <- ReadTable('station', verbose=FALSE, deploy=TRUE)
   cat('DONE.\n')
 
   #

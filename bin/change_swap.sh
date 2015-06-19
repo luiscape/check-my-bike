@@ -7,7 +7,7 @@
 #
 
 # make the swap.  this will only last until the machine is rebooted
-sudo /bin/dd if=/dev/zero of=/swapfile bs=1024 count=256k
+sudo /bin/dd if=/dev/zero of=/swapfile bs=2M count=2048
 sudo /sbin/mkswap /swapfile
 
 # results in:

@@ -47,6 +47,6 @@ CheckTimeSeries <- function(station_id=NULL) {
 
   ggplot(filtered_data) +
     #geom_point(aes(executionTime, availableDocks), stat='identity', size=3) +
-    geom_line(aes(executionTime, availableDocks), stat='identity')
+    geom_line(aes(executionTime, availableBikes), stat='identity', size=1)
 }
 
