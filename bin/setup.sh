@@ -12,4 +12,8 @@ pip install requests[security]
 # Configuring application.
 #
 python scripts/setup_app/
-python scripts/citi_download/
+
+#
+# Install R dependencies.
+#
+printf "Now run in R: install.packages(c('sqldf', 'dplyr', 'devtools', 'ggplot2', 'httpuv')) \n"
