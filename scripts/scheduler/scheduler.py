@@ -18,10 +18,12 @@ from utilities.prompt_format import item
 schedule.every(1).minutes.do(FetchLatestStationData)
 
 
-def Main():
+def Main(verbose=False):
   '''Wrapper to run all the scheduled tasks.'''
 
-  print '%s Running scheduler.' % item('prompt_bullet')
+  if verbose:
+    print '%s Running scheduler.' % item('prompt_bullet')
+
   while True:
     schedule.run_pending()
     time.sleep(1)

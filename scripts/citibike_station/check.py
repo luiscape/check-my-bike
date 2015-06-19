@@ -15,7 +15,8 @@ from utilities.store_records import StoreRecords
 def FetchLatestStationData(verbose=False):
   '''Fetch latest station data from CitiBike's API'''
 
-  print '%s Fetching station list.' % item('prompt_bullet')
+  if verbose:
+    print '%s Fetching station list.' % item('prompt_bullet')
 
   u = 'http://www.citibikenyc.com/stations/json'
   r = requests.get(u)
