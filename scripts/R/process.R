@@ -11,8 +11,8 @@ library(sqldf)
 library(lubridate)
 
 
-source('scripts/R/helper/read_table.R')
-source('scripts/R/helper/write_table.R')
+source('scripts/R/helpers/read_table.R')
+source('scripts/R/helpers/write_table.R')
 
 #
 # Prepare data for modeling.
@@ -78,6 +78,6 @@ ProcessData <- function() {
   cat('Storing processed data in database | ')
   WriteTable(processed_data, 'station_processed', overwrite=TRUE)
   cat('DONE.\n')
-  
+
   cat('----------------------------\n')
 }
