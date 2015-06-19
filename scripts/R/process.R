@@ -58,7 +58,7 @@ Main <- function() {
   #
   # Load.
   #
-  data <- ReadTable('station')
+  data <- ReadTable('station', deploy=FALSE)
 
   #
   # Process.

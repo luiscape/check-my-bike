@@ -16,6 +16,7 @@ library(sqldf)
 #
 ReadTable <- function(table_name = NULL,
                       db = 'scraperwiki',
+                      deploy = TRUE,
                       verbose = FALSE) {
 
   #
@@ -30,7 +31,7 @@ ReadTable <- function(table_name = NULL,
   #
   # Create database and establish connection.
   #
-  deployPath <- function(p=NULL, d=TRUE, wd="~/check-my-bike/") {
+  deployPath <- function(p=NULL, d=deploy, wd="~/check-my-bike/") {
     if (d) return(paste0(wd, p))
     else return(p)
   }

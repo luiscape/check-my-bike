@@ -11,6 +11,19 @@ python get-pip.py
 rm get-pip.py
 pip install virtualenv
 
+#
+# Installing R.
+#
+apt-get install libcurl4-gnutls-dev
+apt-get install libxml2 libxml2-dev
+codename=$(lsb_release -c -s)
+echo "deb http://cran.fhcrc.org/bin/linux/ubuntu $codename/" | sudo tee -a /etc/apt/sources.list > /dev/null
+sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E084DAB9
+sudo add-apt-repository ppa:marutter/rdev
+sudo apt-get update
+sudo apt-get upgrade
+sudo apt-get install r-base r-base-dev
+printf "Now run in R: install.packages(c('sqldf', 'dplyr', 'devtools', 'ggplot2', 'httpuv')) \n"
 
 #
 # Add cronjob configuration.
