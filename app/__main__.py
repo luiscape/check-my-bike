@@ -1,10 +1,10 @@
-#!/usr/bin/python
-# -*- coding: utf-8 -*-
+# #!/usr/bin/python
+# # -*- coding: utf-8 -*-
 
 import sys
-import app
+import run_scheduler
 
 if __name__ == '__main__':
 
   if sys.argv[1] == 'scheduler':
-    app.RunScheduler()
+    run_scheduler.RunScheduler()
