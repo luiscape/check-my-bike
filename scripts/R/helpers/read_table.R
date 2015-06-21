@@ -16,7 +16,7 @@ library(sqldf)
 #
 ReadTable <- function(table_name = NULL,
                       db = 'scraperwiki',
-                      deploy = TRUE,
+                      deploy = FALSE,
                       verbose = FALSE) {
 
   #
@@ -29,13 +29,22 @@ ReadTable <- function(table_name = NULL,
   if (verbose) message('Read data from a database.')
 
   #
-  # Create database and establish connection.
+  # TODO: improve solution for finding relative paths
+  #       when path is defined by a second script call.
   #
-  deployPath <- function(p=NULL, d=deploy, wd="~/check-my-bike/") {
-    if (d) return(paste0(wd, p))
-    else return(p)
+  dbPath <- function(prod=deploy) {
+    local_path = "/Users/luis/Documents/Programming/hack-my-bike/"
+    prod_path = "~/check-my-bike/"
+    if (prod) return(prod_path)
+    else return(local_path)
   }
-  db_name <- paste0(deployPath(db), ".sqlite")
+
+  db_name <- paste0(dbPath(), db, ".sqlite")
+
+  if (verbose) {
+    print(db_name)
+  }
+
   db <- dbConnect(SQLite(), dbname = db_name)
 
   #
@@ -47,6 +56,6 @@ ReadTable <- function(table_name = NULL,
   # Disconnect and return data.frame.
   #
   dbDisconnect(db)
-  if (verbose) message(paste0('Done! '), nrow(data), 'records read successfuly.')
+  if (verbose) message(paste0('Done!'), nrow(data), 'records read successfuly.')
   return(data)
 }

@@ -6,10 +6,11 @@
 # Author: Luis Capelo | luiscape@gmail.com
 #
 
+library(dplyr)
 library(scales)
 library(ggplot2)
 
-source('scripts/R/helper/read_table.R')
+source('scripts/R/helpers/read_table.R')
 
 #
 # Load data.
@@ -35,16 +36,27 @@ ggplot(filter(data, availableBikesRatio > 0)) +
 # a single dock.
 #
 CheckTimeSeries <- function(station_id=NULL) {
-  
+
   filtered_data <- filter(data, id == station_id)
-  filtered_data$executionTime <- as.POSIXct(filtered_data$executionTime, origin='1970-01-01')
-  ggplot(filtered_data) + 
-    geom_point(aes(executionTime, availableBikesRatio), color='#FFFFFF', stat='identity', size=1.4) +
-    geom_point(aes(executionTime, availableBikesRatio), stat='identity', size=3) +
-    geom_bar(aes(executionTime, availableBikesRatio), stat='identity', size=1.3)
   
-  ggplot(filtered_data) + 
+  filtered_data$bikeDangerLevel <- NA
+  filtered_data$bikeDangerLevel <- ifelse(filtered_data$availableBikesRatio >= 0.8, 'low', filtered_data$bikeDangerLevel)
+  filtered_data$bikeDangerLevel <- ifelse(filtered_data$availableBikesRatio >= 0.4 &
+                                            filtered_data$availableBikesRatio < 0.8
+                                          , 'medium', filtered_data$bikeDangerLevel)
+  filtered_data$bikeDangerLevel <- ifelse(filtered_data$availableBikesRatio >= 0.0 &
+                                            filtered_data$availableBikesRatio < 0.4
+                                          , 'high', filtered_data$bikeDangerLevel)
+  
+  filtered_data$executionTime <- as.POSIXct(filtered_data$executionTime, origin='1970-01-01')
+  ggplot(filtered_data) +
+    geom_line(aes(executionTime, availableBikesRatio), stat='identity', size=1.3) +
+    # geom_line(aes(executionTime, availableBikes),  stat='identity', size=1.3) +
+    scale_x_datetime(breaks=date_breaks("1 hour")) +
+    theme(axis.text.x = element_text(angle = 90, hjust = 1))
+
+  ggplot(filtered_data) +
     #geom_point(aes(executionTime, availableDocks), stat='identity', size=3) +
-    geom_bar(aes(executionTime, availableDocks), stat='identity')
+    geom_line(aes(executionTime, availableBikesRatio), stat='identity', size=1)
 }
 

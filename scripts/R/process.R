@@ -10,35 +10,40 @@ library(dplyr)
 library(sqldf)
 library(lubridate)
 
+#
+# Handles bug between dplyr and sqldf.
+#
+setOldClass(c("tbl_df", "data.frame"))
 
-source('scripts/R/helper/read_table.R')
-source('scripts/R/helper/write_table.R')
+
+source('scripts/R/helpers/read_table.R')
+source('scripts/R/helpers/write_table.R')
 
 #
 # Prepare data for modeling.
 #
-CleanData <- function(df=NULL) {
-  
+CleanData <- function(df=NULL, transform_minutes=TRUE) {
+
   #
   # Select variables of interest.
   #
   s = select(df, id, availableDocks, totalDocks, statusValue, availableBikes, lastCommunicationTime, executionTime)
-  
+
   #
   # Transforming numeric types.
   #
   s$totalDocks <- as.numeric(s$totalDocks)
   s$availableDocks <- as.numeric(s$availableDocks)
   s$availableBikes <- as.numeric(s$availableBikes)
-  
+
   #
   # Transforming time.
   #
-  s$executionTime <- as.POSIXct(s$executionTime)
+  s$executionTime <- format(as.POSIXlt(s$executionTime, origin='1970-01-01'), "%Y-%m-%d %H:%M")
   s$lastCommunicationTime <- as.POSIXct(s$lastCommunicationTime)
   s$week <- week(s$executionTime)
   s$weekDay <- wday(s$executionTime)
-  
+
   #
   # Adding ratios.
   #
@@ -47,26 +52,54 @@ CleanData <- function(df=NULL) {
   s$availabilityRatio <- s$availableDocksRatio + s$availableBikesRatio
   s$usageRatio <- 1 - (s$availableDocksRatio + s$availableBikesRatio)
   
+  #
+  # Clean duplicates.
+  #
+  s <- s[!duplicated(s), ]
+  
+  #
+  # Fetch the latest data per minute.
+  # Pessimistic approach: selects the 
+  # lowest number of available bikes
+  # ratio per same minute observation.
+  #
+  if (transform_minutes) {
+    s <- s %>%
+      group_by(id, executionTime) %>%
+      filter(availableBikes == min(availableBikes)) 
+  }
+
   return(s)
 }
 
 #
 # Wrapper.
 #
-Main <- function() {
+ProcessData <- function() {
 
+  cat('----------------------------\n')
+  cat('Preparing data for model.\n')
+  cat('----------------------------\n')
   #
   # Load.
   #
-  data <- ReadTable('station', deploy=FALSE)
+  cat('Loading data | ')
+  data <- ReadTable('station', verbose=FALSE, deploy=FALSE)
+  cat('DONE.\n')
 
   #
   # Process.
   #
+  cat('Processing data (this may take a few minutes) | ')
   processed_data <- CleanData(data)
+  cat('DONE.\n')
 
   #
   # Store.
   #
+  cat('Storing processed data in database | ')
   WriteTable(processed_data, 'station_processed', overwrite=TRUE)
+  cat('DONE.\n')
+
+  cat('----------------------------\n')
 }
