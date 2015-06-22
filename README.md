@@ -1,7 +1,7 @@
 ## Roll Time
 Check my bike is a prototype application that uses a simple predictive techniques to notify an user the precise time to leave before she runs out of CitiBike docks or bikes.
 
-![Example Time-series](example_plot.png)
+![Example Time-series](screen_grab.png)
 
 
 ## Data Sources
