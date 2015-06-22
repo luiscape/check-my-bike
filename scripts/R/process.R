@@ -38,8 +38,10 @@ CleanData <- function(df=NULL, transform_minutes=TRUE) {
 
   #
   # Transforming time.
+  # BUG: Weird time transformations. Possibly here.
   #
-  s$executionTime <- format(as.POSIXlt(s$executionTime, origin='1970-01-01'), "%Y-%m-%d %H:%M")
+  s$executionTime <- ymd_hms(s$executionTime)
+  s$executionTime <- format(s$executionTime, "%Y-%m-%d %H:%M")
   s$lastCommunicationTime <- as.POSIXct(s$lastCommunicationTime)
   s$week <- week(s$executionTime)
   s$weekDay <- wday(s$executionTime)
