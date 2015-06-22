@@ -17,5 +17,5 @@ rm -rf sandman
 #
 # Configuring application.
 #
-# python scripts/setup_app/
+python scripts/setup_app/
 # python scripts/citi_download/
