@@ -5,52 +5,14 @@
 // Author: Luis Capelo | luiscape@gmail.com
 //
 
-
-//
-// Two parameters to fetch data: station id and date.
-//
-var id = 433
-var today = moment().subtract(1, 'days').format('YYYY-MM-DD')
-var api_query = 'api/station_processeds?id=' + id + '&day=' + today
-
-//
-// Fetch data from the processed data endpoint.
-//
-d3.json(api_query, function(data) {
-
-    var graph_data = data['resources']
-
-    //
-    // Parse data into a datetime object.
-    //
-    parseDate = d3.time.format("%Y-%m-%d %H:%M").parse
-    graph_data.forEach(function(item) { item['executionTime'] = parseDate(item['executionTime']) })
-
-    //
-    // Create chart.
-    //
-    MG.data_graphic({
-        data: graph_data,
-        width: 400,
-        height: 200,
-        right: 0,
-        animate_on_load: true,
-        target: document.getElementById('chart_example'),
-        x_accessor: 'executionTime',
-        y_accessor: 'availableBikesRatio',
-        area: false,
-        x_axis: false,
-        y_axis: true
-    })
-})
-
 function CreateSparkLike(station_id) {
 
     //
     // Two parameters to fetch data: station id and date.
     //
-    var today = moment().subtract(1, 'days').format('YYYY-MM-DD')
-    var api_query = 'api/station_processeds?id=' + station_id + '&day=' + today
+    // var today = moment().subtract(3, 'days').format('YYYY-MM-DD')
+    var today = moment().subtract(5, 'days').format('YYYY-MM-DD')
+    var api_query = 'api/processeds?id=' + station_id + '&day=' + today
 
     //
     // Fetch data from the processed data endpoint.
@@ -68,21 +30,37 @@ function CreateSparkLike(station_id) {
         })
 
         //
+        // Adding annotations.
+        //
+        var markers = [{
+            'executionTime': moment().subtract(5, 'days'),
+            'label': 'Now'
+        }];
+
+        //
         // Create chart.
         //
         MG.data_graphic({
-                    data: graph_data,
-                    width: 400,
-                    height: 200,
-                    right: 0,
-                    animate_on_load: true,
-                    target: document.getElementById('chart_example'),
-                    x_accessor: 'executionTime',
-                    y_accessor: 'availableBikesRatio',
-                    area: false,
-                    x_axis: false,
-                    y_axis: true
-                })
+            data: graph_data,
+            width: 400,
+            height: 200,
+            left: 24,
+            right: 0,
+            top: 30,
+            bottom: 30,
+            animate_on_load: true,
+            target: document.getElementById('plot'),
+            x_accessor: 'executionTime',
+            y_accessor: 'availableBikesRatio',
+            area: false,
+            x_axis: true,
+            y_axis: true,
+            max_y: 1,
+            min_y: 0,
+            markers: markers,
+            min_x: moment().subtract(5, 'days').hours(0).minutes(0),
+            max_x: moment().subtract(5, 'days').hours(23).minutes(59),
+        })
 
         //
         // Change the latest numbers.
@@ -92,3 +70,6 @@ function CreateSparkLike(station_id) {
 
     })
 }
+
+
+CreateSparkLike(433)

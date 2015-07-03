@@ -24,8 +24,8 @@ path.mg-main-line {
 }
 
 .vertical-center {
-  min-height: 100%;
-  min-height: 8vh; /* These two lines are counted as one :-) */
+  /*min-height: 100%;*/
+  /*min-height: 12vh;*/
   display: flex;
   align-items: center;
 }
@@ -36,16 +36,15 @@ path.mg-main-line {
  * gets 2/3 of the page. Original from MapBox: https://www.mapbox.com/guides/building-a-store-locator/
  */
 .sidebar {
-  width:33.3333%;
   padding-bottom: 400px !important;
   }
 .map {
   /*border-left:1px solid #fff;*/
   position:absolute;
   left:33.3333%;
-  width:66.6666%;
-  top:0;
-  bottom:0;
+  /*width:66.6666%;*/
+  top:0 !important;
+  bottom:0 !important;
   }
 .pad2 {
   padding:20px;
@@ -161,3 +160,5 @@ a:hover { color:#2980b9; }
   padding:10px;
 }
 .leaflet-container .leaflet-marker-icon { cursor:pointer; }
+
+.roundButton { border-radius: 20px !important; }

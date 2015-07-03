@@ -36,30 +36,25 @@ d3.json('static/data/station_metadata.geojson', function(err, geojson) {
         // Each marker on the map.
         var popup = '<h3>Docking Station</h3><div>' + prop.stAddress1;
 
-        var listing_container = listings.appendChild(document.createElement('div'));
-        listing_container.className = 'item row';
+        // var listing_container = listings.appendChild(document.createElement('div'));
+        // listing_container.className = 'item row';
 
         var listing = listings.appendChild(document.createElement('div'));
-        listing.className = 'item col-xs-8';
-
-        var watch = listings.appendChild(document.createElement('div'))
-        watch.className = 'col-xs-4 pull-right vertical-center'
-        watch.innerHTML = '<p><a class="btn btn-primary btn-sm" href="#" role="button">Watch</a></p>'
+        listing.className = 'item col-xs-12';
 
         var link = listing.appendChild(document.createElement('a'));
         link.href = '#';
-        link.className = 'store-title';
+        link.className = 'col-xs-8 store-title';
+
+        var watch = listing.appendChild(document.createElement('div'))
+        watch.className = 'col-xs-4 vertical-center'
+        watch.innerHTML = '<a class="roundButton btn btn-primary btn-sm" href="#" role="button">Watch <span class="fa fa-eye-slash"></span></a>'
 
         link.innerHTML = prop.stAddress1;
         if (prop.id) {
-            link.innerHTML += '<br /><small class="quiet">' + prop.id + '</small>';
+            // Id under name.
+            link.innerHTML += '<br /><small class="quiet">' + prop.statusValue + '</small>';
             popup += '<br /><small class="quiet">' + prop.id + '</small>';
-        }
-
-        var details = listing.appendChild(document.createElement('div'));
-        details.innerHTML = prop.id;
-        if (prop.statusValue) {
-            details.innerHTML += ' &middot; ' + prop.statusValue;
         }
 
         link.onclick = function() {
