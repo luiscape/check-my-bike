@@ -7,34 +7,11 @@
 #
 
 library(dplyr)
+library(RJSONIO)
 
-source('scripts/R/models/auto_arima.R')
 source('scripts/R/helpers/read_table.R')
-
-#' @get /status
-ShowCurrentStatus <- function(station_id=445, deploy_api=FALSE) {
-
-  #
-  # Sanity check.
-  #
-  if (is.null(id)) stop('Provide an id.')
-
-  #
-  # Load data.
-  #
-  data <- ReadTable('station_processed', deploy=FALSE)
-
-  #
-  # Show current status of prefered station.
-  #
-  preferred_station <- data %>%
-    filter(executionTime == max(executionTime)) %>%
-    filter(id == station_id)
-
-  list(preferred_station)
-
-}
-
+source('scripts/R/helpers/write_table.R')
+source('scripts/R/models/neural_network.R')
 
 
 #
@@ -47,16 +24,26 @@ GenerateForecastOutput <- function() {
   #
   # Load original data.
   #
-  data <- ReadTable('station_processed', deploy=FALSE)
-
+  df <- ReadTable('processed', deploy=FALSE)
+  
+  #
+  # Load list of stations.
+  #
+  station_list <- sapply(fromJSON('data/station_meta.json'), function(x) x$id)
+  
   #
   # Forecast table.
   #
-  forecast_data <- data.frame(FitArimaModel(production_model=TRUE))
-
+  for (i in 1:length(station_list)) {
+    it <- try(FitNeuralNetworkModel(data=df, station_id=station_list[i], production_model=TRUE))
+    if (i == 1) forecast_data <- it
+    else forecast_data <- rbind(forecast_data, it)
+  }
+  
   #
-  # Creating school children plot.
+  # Writing into db.
   #
-  list(head(forecast_data))
-
+  WriteTable(as.data.frame(forecast_data), 'forecast', overwrite=TRUE)
+  return(forecast_data)
+  
 }

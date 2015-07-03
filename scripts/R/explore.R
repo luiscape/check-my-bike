@@ -48,8 +48,12 @@ CheckTimeSeries <- function(station_id=NULL) {
                                             filtered_data$availableBikesRatio < 0.4
                                           , 'high', filtered_data$bikeDangerLevel)
   
-  filtered_data$executionTime <- as.POSIXct(filtered_data$executionTime, origin='1970-01-01')
-  ggplot(filtered_data) +
+  data <- as.POSIXct(data$executionTime)
+  filtered_data$executionTime <- as.POSIXct(filtered_data$executionTime)
+  
+  time_filtered_data <- filter(filtered_data, executionTime >= as.POSIXct('2015-06-20'))
+  
+  ggplot(time_filtered_data) +
     geom_line(aes(executionTime, availableBikesRatio), stat='identity', size=1.3) +
     # geom_line(aes(executionTime, availableBikes),  stat='identity', size=1.3) +
     scale_x_datetime(breaks=date_breaks("1 hour")) +
