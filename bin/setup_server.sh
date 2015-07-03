@@ -3,6 +3,7 @@
 #
 # Download Python and its dependencies.
 #
+apt-get update
 apt-get install python-setuptools python-dev python2.7-dev python-software-properties libpq-dev
 apt-get install build-essential libssl-dev libffi-dev python-dev gcc-4.6-base cpp-4.6 libgomp1 libquadmath0 libc6-dev
 apt-get install cron
@@ -24,9 +25,3 @@ sudo apt-get update
 sudo apt-get upgrade
 sudo apt-get install r-base r-base-dev
 printf "Now run in R: install.packages(c('sqldf', 'dplyr', 'devtools', 'ggplot2', 'httpuv')) \n"
-
-#
-# Add cronjob configuration.
-#
-printf "Installing crontab.\n"
-crontab -l | { cat; echo "*/1 * * * * bash ~/check-my-bike/bin/collect_station.sh"; } | crontab -

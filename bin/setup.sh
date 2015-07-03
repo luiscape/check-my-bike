@@ -12,10 +12,11 @@ pip install requests[security]
 git clone https://github.com/jeffknupp/sandman
 cd sandman
 python setup.py install
+cd ..
 rm -rf sandman
 
 #
 # Configuring application.
 #
-python scripts/setup_app/
+# python scripts/setup_app/
 # python scripts/citi_download/

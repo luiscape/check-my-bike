@@ -22,7 +22,7 @@ source('scripts/R/helpers/write_table.R')
 #
 # Prepare data for modeling.
 #
-CleanData <- function(df=NULL, transform_minutes=TRUE) {
+CleanData <- function(df=NULL, transform_minutes=TRUE, verbose=FALSE) {
 
   #
   # Select variables of interest.
@@ -41,6 +41,7 @@ CleanData <- function(df=NULL, transform_minutes=TRUE) {
   # BUG: Weird time transformations. Possibly here.
   #
   s$executionTime <- ymd_hms(s$executionTime)
+  s$day <- format(s$executionTime, "%Y-%m-%d")
   s$executionTime <- format(s$executionTime, "%Y-%m-%d %H:%M")
   s$lastCommunicationTime <- as.POSIXct(s$lastCommunicationTime)
   s$week <- week(s$executionTime)
@@ -65,11 +66,16 @@ CleanData <- function(df=NULL, transform_minutes=TRUE) {
   # lowest number of available bikes
   # ratio per same minute observation.
   #
+  b = nrow(s)
   if (transform_minutes) {
     s <- s %>%
       group_by(id, executionTime) %>%
       filter(availableBikes == min(availableBikes)) 
   }
+  
+  a = nrow(s)
+  
+  if (verbose) cat(paste0('Rows cleaned: ', round((1-(a/b))*100, 4), '%'))
 
   return(s)
 }
@@ -82,6 +88,7 @@ ProcessData <- function() {
   cat('----------------------------\n')
   cat('Preparing data for model.\n')
   cat('----------------------------\n')
+  
   #
   # Load.
   #
@@ -91,16 +98,23 @@ ProcessData <- function() {
 
   #
   # Process.
+  # dplyr has a bug with classes. 
+  # Transforming the output of a dplyr function
+  # to data.frame is necessary before storing it
+  # in a data base.
+  #
+  # Also, if the MASS package is loaded, the dplyr select()
+  # function won't work. You'll need to unload it from the namespace.
   #
   cat('Processing data (this may take a few minutes) | ')
-  processed_data <- CleanData(data)
-  cat('DONE.\n')
+  processed_data <- as.data.frame(CleanData(data, verbose=TRUE))
+  ccat('DONE.\n')
 
   #
   # Store.
   #
   cat('Storing processed data in database | ')
-  WriteTable(processed_data, 'station_processed', overwrite=TRUE)
+  WriteTable(processed_data, 'processed', overwrite=TRUE)
   cat('DONE.\n')
 
   cat('----------------------------\n')

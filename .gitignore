@@ -4,6 +4,7 @@ data/historic/*
 data/historic/**
 config/secrets.json
 
+*.pyc
 *.sqlite
 *.sqlite-journal
 .DS_Store
