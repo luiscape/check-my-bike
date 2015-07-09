@@ -10,7 +10,7 @@ sys.path.append(dir)
 from utilities.prompt_format import item
 from utilities.store_records import StoreRecords
 
-from citibike_station.check import FetchLatestStationData
+from citibike_station.fetch import FetchLatestStationData
 
 
 def Main():
