@@ -24,3 +24,7 @@ def FormatDate(s, verbose=True):
       print e
       return s
 
+def CalculateRatios():
+  '''Calculates the three basic rations we are currently using.'''
+
+  print 'nothing yet'
