@@ -13,13 +13,15 @@ from utilities.prompt_format import item
 def Main():
   '''Wrapper.'''
 
-  tables = ['trip', 'station']
+  tables = ['station']
   try:
     for table in tables:
       Db.CreateDbAndTable(table_name=table)
 
   except Exception as e:
     print '%s Database configuration failed' % item('prompt_error')
+    print e
+    return False
 
 
   print '%s Database configured successfully.\n' % item('prompt_success')
