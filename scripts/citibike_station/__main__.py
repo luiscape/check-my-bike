@@ -20,6 +20,8 @@ def Main():
     FetchLatestStationData()
 
   except Exception as e:
+    print '%s Failed to fetch data from the CitiBike API.' % item('prompt_error')
+    print e
     return False
 
   print '%s Collection worked successfully.' % item('prompt_success')

@@ -24,7 +24,30 @@ def FormatDate(s, verbose=True):
       print e
       return s
 
-def CalculateRatios():
+
+def CalculateWeekNumber(s, verbose=True):
+  '''Format a single date entry into the desired Rolltime format.'''
+
+  try:
+    d = datetime.strptime(s, '%Y-%m-%d %X %p').isocalendar()[1]
+    return str(d)
+
+  except Exception as e:
+    if verbose:
+      print '%s Failed to fetch the week number: %s' % (item('prompt_error'), s)
+      print e
+      return s
+
+
+def CalculateRatio(a, b, verbose=True):
   '''Calculates the three basic rations we are currently using.'''
 
-  print 'nothing yet'
+  try:
+    ratio = float(a) / float(b)
+    return ratio
+
+  except Exception as e:
+    if verbose:
+      print '%s Failed to calculate ratio: %s / %s' % (item('prompt_error'), a, b)
+      print e
+      return 0

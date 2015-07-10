@@ -8,7 +8,7 @@ import requests
 dir = os.path.split(os.path.split(os.path.realpath(__file__))[0])[0]
 sys.path.append(dir)
 
-from process import FormatDate
+import process as Process
 from utilities.prompt_format import item
 from utilities.store_records import StoreRecords
 
@@ -29,10 +29,20 @@ def FetchLatestStationData(verbose=False):
   else:
     data = r.json()
 
+    #
+    # Schema of the database
+    # has to be defined properly.
+    # Right now everything is text
+    # and thigs are, as expected, not
+    # working as planned.
+    #
     record_array = []
     for record in data['stationBeanList']:
-      record['executionTime'] = FormatDate(data['executionTime'])
-      record['lastCommunicationTime'] = FormatDate(record['lastCommunicationTime'])
+      record['weekDay'] = Process.CalculateWeekNumber(data['executionTime'])
+      record['executionTime'] = Process.FormatDate(data['executionTime'])
+      record['lastCommunicationTime'] = Process.FormatDate(record['lastCommunicationTime'])
+      record['availableDocksRatio'] = str(Process.CalculateRatio(record['availableDocks'], record['totalDocks']))
+      record['availableBikesRatio'] = str(Process.CalculateRatio(record['availableBikes'], record['totalDocks']))
 
       record_array.append(record)
 
