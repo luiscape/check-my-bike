@@ -35,7 +35,6 @@ pycrypto==2.6.1
 python-coveralls==2.5.0
 requests==2.6.0
 rsa==3.1.4
-sandman==0.9.8
 schedule==0.3.1
 scraperwiki==0.4.1
 sh==1.11
@@ -45,3 +44,4 @@ termcolor==1.1.0
 tornado==4.1
 uritemplate==0.6
 wsgiref==0.1.2
+-e git+https://github.com/jeffknupp/sandman.git#egg=sandman
