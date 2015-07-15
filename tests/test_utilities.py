@@ -18,8 +18,19 @@ class CheckLoadConfig(unittest.TestCase):
   def test_load_config_doesnt_fail(self):
     assert Config.LoadConfig('dev.json') != False
 
-  # def test_tables_exist(self):
-  #   tables = scraperwiki.sqlite.show_tables()
-  #   assert 'FCS' in tables.keys()
-  #   assert 'CSI' in tables.keys()
-  #   assert 'Income' in tables.keys()
+  def test_config_files_have_correct_structure(self):
+    d = Config.LoadConfig('dev.json')
+    p = Config.LoadConfig('prod.json')
+    assert 'database' in d.keys()
+    assert 'database' in p.keys()
+
+    #
+    # Test database config structure.
+    #
+    assert 'name' in d['database']
+    assert 'fields' in d['database']
+    assert 'primary_key' in d['database']
+
+    assert 'name' in p['database']
+    assert 'fields' in p['database']
+    assert 'primary_key' in p['database']
