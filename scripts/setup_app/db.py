@@ -9,33 +9,46 @@ dir = os.path.split(os.path.split(os.path.realpath(__file__))[0])[0]
 sys.path.append(dir)
 
 from utilities.prompt_format import item
+from utilities.load_config import LoadConfig
 
-def CreateDbAndTable(table_name=None, verbose=True):
+
+def CreateDbAndTable(config_file='dev.json', verbose=True):
   '''Creating tables in SQLite database.'''
 
-  if table_name == None:
-    print '%s Please provide table name.' % item('promtp_error')
+  #
+  # Loading database information
+  # from config file.
+  #
+  database = LoadConfig(config_file)['database']
+
+  if 'name' not in database.keys():
+    print '%s Database name not available in config file.' % item('promtp_error')
     return False
 
   #
-  # This creates a 'generic' schema in which
-  # all fields are text. Better schemas
-  # should be provided in the config files.
+  # Construct SQL statement.
   #
-  schemas = {
-    'station': ["id", "stationName", "availableDocks", "totalDocks", "latitude", "longitude", "statusValue", "statusKey", "availableBikes", "stAddress1", "stAddress2", "city", "postalCode", "location", "altitude", "testStation", "lastCommunicationTime", "landMark", "executionTime"]
-  }
-  schema = schemas[table_name]
-  statement = " TEXT, ".join(schema)
-  statement = 'CREATE TABLE IF NOT EXISTS %s(%s TEXT, PRIMARY KEY (id, executionTime))' % (table_name, statement)
+  table_sql = ""
+  for f in database['fields']:
+    s = '%s %s, ' % (f['field_name'], f['type'])
+    table_sql += s
 
+  statement = 'CREATE TABLE IF NOT EXISTS %s(%sPRIMARY KEY (%s))' % (database['name'], table_sql, ", ".join(database['primary_key']))
+
+  #
+  # Make statements to the database.
+  #
   try:
     scraperwiki.sqlite.execute(statement)
     scraperwiki.sqlite._State.new_transaction()
-    print "%s table `%s` created." % (item('prompt_bullet'), str(table_name))
+    print "%s table `%s` created." % (item('prompt_bullet'), str(database['name']))
 
   except Exception as e:
-    print '%s Table `%s` could not be created.' % (item('prompt_error'), table_name)
+    print '%s Table `%s` could not be created.' % (item('prompt_error'), database['name'])
     if verbose:
       print e
     return False
+
+
+if __name__ == '__main__':
+  CreateDbAndTable()

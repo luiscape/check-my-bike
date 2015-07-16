@@ -2,9 +2,26 @@
 # # -*- coding: utf-8 -*-
 
 import sys
+import server
 import run_scheduler
 
 if __name__ == '__main__':
 
-  if sys.argv[1] == 'scheduler':
-    run_scheduler.RunScheduler()
+  #
+  # If command provided
+  # run the collector.
+  #
+  try:
+    command = sys.argv[1]
+
+    if command == 'scheduler':
+      run_scheduler.RunScheduler()
+
+  except Exception as e:
+    pass
+
+  #
+  # If no command
+  # provided run API server.
+  #
+  server.Main()
