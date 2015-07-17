@@ -17,14 +17,20 @@ def Main():
   '''Wrapper.'''
 
   try:
-    FetchLatestStationData()
+    status = FetchLatestStationData()
 
   except Exception as e:
     print '%s Failed to fetch data from the CitiBike API.' % item('prompt_error')
     print e
     return False
 
-  print '%s Collection worked successfully.' % item('prompt_success')
+  if status != False:
+    print '%s Collection worked successfully.' % item('prompt_success')
+    return True
+
+  else:
+    print '%s Failed to fetch data from the CitiBike API.' % item('prompt_error')
+    return False
 
 if __name__ == '__main__':
   Main()

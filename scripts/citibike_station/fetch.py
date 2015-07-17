@@ -13,11 +13,11 @@ from utilities.prompt_format import item
 from utilities.store_records import StoreRecords
 
 
-def FetchLatestStationData(verbose=False):
+def FetchLatestStationData(verbose=True):
   '''Fetch latest station data from CitiBike's API'''
 
   if verbose:
-    print '%s Fetching station list.' % item('prompt_bullet')
+    print '%s Fetching station data.' % item('prompt_bullet')
 
   u = 'http://www.citibikenyc.com/stations/json'
   r = requests.get(u)
@@ -38,15 +38,33 @@ def FetchLatestStationData(verbose=False):
     #
     record_array = []
     for record in data['stationBeanList']:
+
+      #
+      # Filtering record for
+      # data of interest.
+      #
+      record = {
+         'id': int(record['id']),
+         'totalDocks': int(record['totalDocks']),
+         'availableDocks': int(record['availableDocks']),
+         'availableBikes': int(record['availableBikes']),
+         'lastCommunicationTime': str(record['lastCommunicationTime'])
+         }
+
+      #
+      # Adding additional data.
+      #
       record['weekDay'] = Process.CalculateWeekNumber(data['executionTime'])
+      record['day'] = Process.FormatDay(data['executionTime'])
       record['executionTime'] = Process.FormatDate(data['executionTime'])
       record['lastCommunicationTime'] = Process.FormatDate(record['lastCommunicationTime'])
-      record['availableDocksRatio'] = str(Process.CalculateRatio(record['availableDocks'], record['totalDocks']))
-      record['availableBikesRatio'] = str(Process.CalculateRatio(record['availableBikes'], record['totalDocks']))
+      record['availableDocksRatio'] = Process.CalculateRatio(record['availableDocks'], record['totalDocks'])
+      record['availableBikesRatio'] = Process.CalculateRatio(record['availableBikes'], record['totalDocks'])
 
       record_array.append(record)
 
-    StoreRecords(data=record_array, table='station', verbose=True)
+    if StoreRecords(data=record_array, table='metric', verbose=True) == False:
+      return False
 
 
 if __name__ == '__main__':

@@ -11,12 +11,11 @@ from mock import patch
 from scripts.utilities import load_config as Config
 
 
-
 class CheckLoadConfig(unittest.TestCase):
   '''Testing the process of creating a database.'''
 
   def test_load_config_doesnt_fail(self):
-    assert Config.LoadConfig('dev.json') != False
+    assert Config.LoadConfig('dev.json', True) != False
 
   def test_config_files_have_correct_structure(self):
     d = Config.LoadConfig('dev.json')
@@ -27,10 +26,12 @@ class CheckLoadConfig(unittest.TestCase):
     #
     # Test database config structure.
     #
-    assert 'name' in d['database']
-    assert 'fields' in d['database']
-    assert 'primary_key' in d['database']
+    for table in d['database']:
+      assert 'name' in table.keys()
+      assert 'fields' in table.keys()
+      assert 'primary_key' in table.keys()
 
-    assert 'name' in p['database']
-    assert 'fields' in p['database']
-    assert 'primary_key' in p['database']
+    for table in p['database']:
+      assert 'name' in table.keys()
+      assert 'fields' in table.keys()
+      assert 'primary_key' in table.keys()

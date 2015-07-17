@@ -17,7 +17,7 @@ from utilities.prompt_format import item
 #
 schedule.every(1).minutes.do(FetchLatestStationData)
 
-def Main(verbose=False):
+def Main(verbose=True):
   '''Wrapper to run all the scheduled tasks.'''
 
   if verbose:
