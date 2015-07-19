@@ -4,8 +4,10 @@
 import os
 import sys
 import time
+import json
 import requests
 import schedule
+from datetime import datetime
 
 dir = os.path.split(os.path.split(os.path.realpath(__file__))[0])[0]
 sys.path.append(dir)
@@ -26,11 +28,7 @@ def ScrapeMotivateWebsite(verbose=True):
     r = requests.get(u)
 
     #
-    # TODO: Load config file.
-    #
-
-    #
-    # Parse it with beautiful soup.
+    # Find data with BeautifulSoup.
     #
     soup = BeautifulSoup(r.content, 'html.parser')
     tables = soup.findAll("table")
@@ -41,19 +39,36 @@ def ScrapeMotivateWebsite(verbose=True):
       #
       # Build output.
       #
-      test = {
+      iterator = {
         'name': city_list[i],
-        table.findAll('th')[1].string: table.findAll('td')[0].string,
-        table.findAll('th')[2].string: table.findAll('td')[1].string
+        table.findAll('th')[1].string: int(table.findAll('td')[0].string.replace(',', '')),
+        table.findAll('th')[2].string: int(table.findAll('td')[1].string.replace(',', ''))
         }
 
       i += 1
 
-      all_city_data.append(test)
+      all_city_data.append(iterator)
 
-    print all_city_data
+    #
+    # Find links with BeautifulSoup.
+    #
+    links = soup.find_all("div", class_="content")
+    i = 0
+    for link in links:
+      all_city_data[i]['program_website'] = link.find('a').get('href')
+      all_city_data[i]['company_logo_url'] = 'http://www.motivateco.com' + link.findAll('img')[0].get('src')
+      all_city_data[i]['bike_image_url'] = 'http://www.motivateco.com' + link.findAll('img')[0].get('src')
+
+      #
+      # Get current time.
+      #
+      d = datetime.now()
+      all_city_data[i]['information_last_updated'] = str(d.strftime('%Y-%m-%d %H:%M'))
+
+      i += 1
 
 
+    return all_city_data
 
 
   except Exception as e:
@@ -62,16 +77,20 @@ def ScrapeMotivateWebsite(verbose=True):
     return False
 
 
-def StoreOutput():
+def StoreOutput(data, json_path, verbose=True):
   '''Store the output into the local configuration JSON file.'''
 
   try:
-    print 'nothing yet'
+    with open(json_path, 'w') as out_file:
+       json.dump(data, out_file)
+
+    print '%s Stored data in JSON successfully.\n' % item('prompt_success')
 
   except Exception as e:
     print '%s Failed to store data in JSON.' % item('prompt_error')
     print e
     return False
+
 
 def Main():
   '''Wrapper.'''
@@ -91,6 +110,8 @@ def Main():
     print '%s Motivate scraper failed.' % item('prompt_error')
     return False
 
+  else:
+    StoreOutput(data, 'test.json')
 
 if __name__ == '__main__':
   Main()
