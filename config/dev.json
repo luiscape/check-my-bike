@@ -31,5 +31,22 @@
         { "field_name": "testStation" , "type": "TEXT" },
         { "field_name": "landMark" , "type": "TEXT" }
      ]
+    },
+    {
+    "name": "cities",
+    "primary_key": ["id"],
+    "fields": [
+        { "field_name": "id" , "type": "TEXT" },
+        { "field_name": "city" , "type": "TEXT" },
+        { "field_name": "state" , "type": "TEXT" },
+        { "field_name": "country" , "type": "TEXT" },
+        { "field_name": "bikes" , "type": "INTEGER" },
+        { "field_name": "stations" , "type": "INTEGER" },
+        { "field_name": "company_name" , "type": "TEXT" },
+        { "field_name": "company_logo_url" , "type": "TEXT" },
+        { "field_name": "bike_image_url" , "type": "TEXT" },
+        { "field_name": "information_last_updated" , "type": "TEXT" },
+        { "field_name": "program_website" , "type": "TEXT" }
+     ]
     }]
 }
