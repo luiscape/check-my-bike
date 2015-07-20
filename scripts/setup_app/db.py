@@ -21,33 +21,34 @@ def CreateDbAndTable(config_file='dev.json', verbose=True):
   #
   database = LoadConfig(config_file)['database']
 
-  if 'name' not in database.keys():
-    print '%s Database name not available in config file.' % item('promtp_error')
-    return False
-
   #
-  # Construct SQL statement.
+  # Build each table.
   #
-  table_sql = ""
-  for f in database['fields']:
-    s = '%s %s, ' % (f['field_name'], f['type'])
-    table_sql += s
+  for table in database:
 
-  statement = 'CREATE TABLE IF NOT EXISTS %s(%sPRIMARY KEY (%s))' % (database['name'], table_sql, ", ".join(database['primary_key']))
+    #
+    # Construct SQL statement.
+    #
+    table_sql = ""
+    for f in table['fields']:
+      s = '%s %s, ' % (f['field_name'], f['type'])
+      table_sql += s
 
-  #
-  # Make statements to the database.
-  #
-  try:
-    scraperwiki.sqlite.execute(statement)
-    scraperwiki.sqlite._State.new_transaction()
-    print "%s table `%s` created." % (item('prompt_bullet'), str(database['name']))
+    statement = 'CREATE TABLE IF NOT EXISTS %s(%sPRIMARY KEY (%s))' % (table['name'], table_sql, ", ".join(table['primary_key']))
 
-  except Exception as e:
-    print '%s Table `%s` could not be created.' % (item('prompt_error'), database['name'])
-    if verbose:
-      print e
-    return False
+    #
+    # Make statements to the database.
+    #
+    try:
+      scraperwiki.sqlite.execute(statement)
+      scraperwiki.sqlite._State.new_transaction()
+      print "%s table `%s` created." % (item('prompt_bullet'), str(table['name']))
+
+    except Exception as e:
+      print '%s Table `%s` could not be created.' % (item('prompt_error'), table['name'])
+      if verbose:
+        print e
+      return False
 
 
 if __name__ == '__main__':

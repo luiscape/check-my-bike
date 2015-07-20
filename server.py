@@ -7,7 +7,7 @@ import sys
 import scripts
 import logging
 
-from app import app
+# from app import app
 from flask.ext.cors import CORS
 from tornado.ioloop import IOLoop
 from sandman.model import activate
@@ -29,9 +29,9 @@ application.config['SANDMAN_GENERATE_PKS'] = True
 
 # Allowing CORS.
 cors = CORS(application)
-application = DispatcherMiddleware(app, {
-    '/api': application,
-    })
+# application = DispatcherMiddleware(app, {
+#     '/': application,
+#     })
 
 
 def CheckLocation():

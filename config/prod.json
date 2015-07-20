@@ -1,28 +1,52 @@
 {
-  "database": {
-    "name": "station",
+  "database": [{
+    "name": "metric",
     "primary_key": ["id", "executionTime"],
     "fields": [
         { "field_name": "id" , "type": "INTEGER" },
-        { "field_name": "stationName" , "type": "TEXT" },
         { "field_name": "availableDocks" , "type": "INTEGER" },
         { "field_name": "totalDocks" , "type": "INTEGER" },
-        { "field_name": "latitude" , "type": "FLOAT" },
-        { "field_name": "longitude" , "type": "FLOAT" },
-        { "field_name": "statusValue" , "type": "TEXT" },
-        { "field_name": "statusKey" , "type": "TEXT" },
-        { "field_name": "statusKey" , "type": "INTEGER" },
         { "field_name": "availableBikes" , "type": "INTEGER" },
+        { "field_name": "lastCommunicationTime" , "type": "TEXT" },
+        { "field_name": "executionTime" , "type": "TEXT" },
+        { "field_name": "day" , "type": "TEXT" },
+        { "field_name": "week" , "type": "INTEGER" },
+        { "field_name": "weekDay" , "type": "INTEGER" },
+        { "field_name": "availableDocksRatio" , "type": "REAL" },
+        { "field_name": "availableBikesRatio" , "type": "REAL" }
+     ]
+    },{
+    "name": "station",
+    "primary_key": ["id"],
+    "fields": [
+        { "field_name": "id" , "type": "INTEGER" },
+        { "field_name": "stationName" , "type": "TEXT" },
+        { "field_name": "statusValue" , "type": "TEXT" },
+        { "field_name": "statusKey" , "type": "INTEGER" },
         { "field_name": "stAddress1" , "type": "TEXT" },
         { "field_name": "stAddress2" , "type": "TEXT" },
-        { "field_name": "city" , "type": "TEXT" },
-        { "field_name": "postalCode" , "type": "TEXT" },
+        { "field_name": "postalCode" , "type": "INTEGER" },
         { "field_name": "location" , "type": "TEXT" },
         { "field_name": "altitude" , "type": "TEXT" },
         { "field_name": "testStation" , "type": "TEXT" },
-        { "field_name": "lastCommunicationTime" , "type": "TEXT" },
-        { "field_name": "landMark" , "type": "TEXT" },
-        { "field_name": "executionTime" , "type": "TEXT" }
+        { "field_name": "landMark" , "type": "TEXT" }
      ]
-    }
+    },
+    {
+    "name": "location",
+    "primary_key": ["id"],
+    "fields": [
+        { "field_name": "id" , "type": "TEXT" },
+        { "field_name": "city" , "type": "TEXT" },
+        { "field_name": "state" , "type": "TEXT" },
+        { "field_name": "country" , "type": "TEXT" },
+        { "field_name": "bikes" , "type": "INTEGER" },
+        { "field_name": "stations" , "type": "INTEGER" },
+        { "field_name": "company_name" , "type": "TEXT" },
+        { "field_name": "company_logo_url" , "type": "TEXT" },
+        { "field_name": "bike_image_url" , "type": "TEXT" },
+        { "field_name": "information_last_updated" , "type": "TEXT" },
+        { "field_name": "program_website" , "type": "TEXT" }
+     ]
+    }]
 }

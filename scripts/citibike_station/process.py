@@ -16,13 +16,27 @@ def FormatDate(s, verbose=True):
 
   try:
     d = datetime.strptime(s, '%Y-%m-%d %X %p')
-    return d.strftime('%Y-%m-%d %H:%M')
+    return str(d.strftime('%Y-%m-%d %H:%M'))
 
   except Exception as e:
     if verbose:
-      print '%s Failed to convert date: %s' % (item('prompt_error'), s)
+      print '%s Failed to convert date: %s' % (item('prompt_warn'), s)
       print e
-      return s
+      return str(s)
+
+
+def FormatDay(s, verbose=True):
+  '''Formats the date stamp to look like a simple ISO date.'''
+
+  try:
+    d = datetime.strptime(s, '%Y-%m-%d %X %p')
+    return str(d.strftime('%Y-%m-%d'))
+
+  except Exception as e:
+    if verbose:
+      print '%s Failed to convert date: %s' % (item('prompt_warn'), s)
+      print e
+      return str(s)
 
 
 def CalculateWeekNumber(s, verbose=True):
@@ -30,13 +44,13 @@ def CalculateWeekNumber(s, verbose=True):
 
   try:
     d = datetime.strptime(s, '%Y-%m-%d %X %p').isocalendar()[1]
-    return str(d)
+    return int(d)
 
   except Exception as e:
     if verbose:
-      print '%s Failed to fetch the week number: %s' % (item('prompt_error'), s)
+      print '%s Failed to fetch the week number: %s' % (item('prompt_warn'), s)
       print e
-      return s
+      return str(s)
 
 
 def CalculateRatio(a, b, verbose=True):
@@ -48,6 +62,6 @@ def CalculateRatio(a, b, verbose=True):
 
   except Exception as e:
     if verbose:
-      print '%s Failed to calculate ratio: %s / %s' % (item('prompt_error'), a, b)
+      print '%s Failed to calculate ratio: %s / %s' % (item('prompt_warn'), a, b)
       print e
       return 0
