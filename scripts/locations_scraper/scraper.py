@@ -14,10 +14,19 @@ sys.path.append(dir)
 
 from bs4 import BeautifulSoup
 from utilities.prompt_format import item
+from utilities.load_config import LoadConfig
+from utilities.store_records import StoreRecords
 
 
 def ScrapeMotivateWebsite(verbose=True):
   '''Scrapes the Motivate website for information about their bike sharing programs.'''
+
+  #
+  # Load config data.
+  #
+  location_data = LoadConfig('locations.json')
+  if location_data == False:
+    return False
 
   try:
 
@@ -33,21 +42,17 @@ def ScrapeMotivateWebsite(verbose=True):
     soup = BeautifulSoup(r.content, 'html.parser')
     tables = soup.findAll("table")
     city_list = ["seattle", "toronto", "columbus", "bay_area", "chicago", "new_york", "chattanooga", "boston", "washington", "melbourne" ]
-    all_city_data = []
     i = 0
     for table in tables:
+
       #
-      # Build output.
+      # Add output to the location data.
       #
-      iterator = {
-        'name': city_list[i],
-        table.findAll('th')[1].string: int(table.findAll('td')[0].string.replace(',', '')),
-        table.findAll('th')[2].string: int(table.findAll('td')[1].string.replace(',', ''))
-        }
+      location_data[i]['bikes'] = int(table.findAll('td')[0].string.replace(',', ''))
+      location_data[i]['stations'] = int(table.findAll('td')[0].string.replace(',', ''))
 
       i += 1
 
-      all_city_data.append(iterator)
 
     #
     # Find links with BeautifulSoup.
@@ -55,20 +60,20 @@ def ScrapeMotivateWebsite(verbose=True):
     links = soup.find_all("div", class_="content")
     i = 0
     for link in links:
-      all_city_data[i]['program_website'] = link.find('a').get('href')
-      all_city_data[i]['company_logo_url'] = 'http://www.motivateco.com' + link.findAll('img')[0].get('src')
-      all_city_data[i]['bike_image_url'] = 'http://www.motivateco.com' + link.findAll('img')[0].get('src')
+      location_data[i]['program_website'] = link.find('a').get('href')
+      location_data[i]['company_logo_url'] = 'http://www.motivateco.com' + link.findAll('img')[0].get('src')
+      location_data[i]['bike_image_url'] = 'http://www.motivateco.com' + link.findAll('img')[0].get('src')
 
       #
       # Get current time.
       #
       d = datetime.now()
-      all_city_data[i]['information_last_updated'] = str(d.strftime('%Y-%m-%d %H:%M'))
+      location_data[i]['information_last_updated'] = str(d.strftime('%Y-%m-%d %H:%M'))
 
       i += 1
 
 
-    return all_city_data
+    return location_data
 
 
   except Exception as e:
@@ -77,6 +82,9 @@ def ScrapeMotivateWebsite(verbose=True):
     return False
 
 
+#
+# Function deprecated. Candidate for deletion soon.
+#
 def StoreOutput(data, json_path, verbose=True):
   '''Store the output into the local configuration JSON file.'''
 
@@ -111,7 +119,10 @@ def Main():
     return False
 
   else:
-    StoreOutput(data, 'test.json')
+    if StoreRecords(data=data, table='location', verbose=True) == False:
+      return False
+
+    print '%s Scraped program / location data successfully.\n' % item('prompt_success')
 
 if __name__ == '__main__':
   Main()
