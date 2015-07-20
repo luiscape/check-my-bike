@@ -33,7 +33,7 @@
      ]
     },
     {
-    "name": "cities",
+    "name": "location",
     "primary_key": ["id"],
     "fields": [
         { "field_name": "id" , "type": "TEXT" },
