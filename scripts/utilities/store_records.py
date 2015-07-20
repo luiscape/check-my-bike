@@ -13,21 +13,26 @@ import scraperwiki
 import progressbar as pb
 
 from utilities.prompt_format import item
+from utilities.load_config import LoadConfig
 
-def StoreRecords(data, table, progress_bar=False, verbose = False):
+def StoreRecords(data, table, progress_bar=False, verbose=False):
   '''Store records in a ScraperWiki database.'''
 
   # Available schemas.
-  schemas = {
-    'trip': ["'tripduration'","'starttime'","'stoptime'","'start station id'","'start station name'","'start station latitude'","'start station longitude'","'end station id'","'end station name'","'end station latitude'","'end station longitude'","'bikeid'","'usertype'","'birth year'","'gender'"],
-    'station': ["id", "stationName", "availableDocks", "totalDocks", "latitude", "longitude", "statusValue", "statusKey", "availableBikes", "stAddress1", "stAddress2", "city", "postalCode", "location", "altitude", "testStation", "lastCommunicationTime", "landMark", "executionTime"]
-  }
+  database = LoadConfig('dev.json')['database']
+  schemas = {}
+  for schema in database:
+    field_names = []
+    for field in schema['fields']:
+      field_names.append(field['field_name'])
+
+    schemas[schema['name']] = field_names
+
 
   try:
     schema = schemas[table]
 
   except Exception as e:
-
     if verbose is True:
       print "%s select one of the following tables: %s." % (item('prompt_error'), ", ".join(schemas.keys()))
       print e
@@ -36,10 +41,11 @@ def StoreRecords(data, table, progress_bar=False, verbose = False):
     return False
 
   try:
-    i = 0
     for record in data:
-      scraperwiki.sqlite.save(schema, record, table_name=table)
+      print record
+      scraperwiki.sqlite.save(record.keys(), record, table_name=table)
 
   except Exception as e:
     print "%s Failed to store record in database." % item('prompt_error')
     print e
+    return False

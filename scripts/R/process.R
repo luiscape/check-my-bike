@@ -27,7 +27,7 @@ CleanData <- function(df=NULL, transform_minutes=TRUE, verbose=FALSE) {
   #
   # Select variables of interest.
   #
-  s = select(df, id, availableDocks, totalDocks, statusValue, availableBikes, lastCommunicationTime, executionTime)
+  s = select(df, id, stationName, availableDocks, totalDocks, statusValue, availableBikes, lastCommunicationTime, executionTime)
 
   #
   # Transforming numeric types.
@@ -52,8 +52,8 @@ CleanData <- function(df=NULL, transform_minutes=TRUE, verbose=FALSE) {
   #
   s$availableDocksRatio <- s$availableDocks / s$totalDocks
   s$availableBikesRatio <- s$availableBikes / s$totalDocks
-  s$availabilityRatio <- s$availableDocksRatio + s$availableBikesRatio
-  s$usageRatio <- 1 - (s$availableDocksRatio + s$availableBikesRatio)
+  # s$availabilityRatio <- s$availableDocksRatio + s$availableBikesRatio
+  # s$usageRatio <- 1 - (s$availableDocksRatio + s$availableBikesRatio)
   
   #
   # Clean duplicates.
@@ -114,7 +114,7 @@ ProcessData <- function() {
   # Store.
   #
   cat('Storing processed data in database | ')
-  WriteTable(processed_data, 'processed', overwrite=TRUE)
+  WriteTable(processed_data, 'metric', overwrite=TRUE)
   cat('DONE.\n')
 
   cat('----------------------------\n')

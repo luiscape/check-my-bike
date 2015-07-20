@@ -10,6 +10,8 @@ build:
 setup_server:
 	bash bin/setup_server.sh;
 
-
 test:
 	bash bin/test.sh;
+
+scheduler:
+	bash bin/collect_station.sh;

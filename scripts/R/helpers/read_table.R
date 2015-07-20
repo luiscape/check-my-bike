@@ -33,7 +33,7 @@ ReadTable <- function(table_name = NULL,
   #       when path is defined by a second script call.
   #
   dbPath <- function(prod=deploy) {
-    local_path = "/Users/luis/Documents/Programming/rolltime-app/"
+    local_path = "/Users/luis/Documents/Programming/rolltime/rolltime-app/"
     prod_path = "~/check-my-bike/"
     if (prod) return(prod_path)
     else return(local_path)
