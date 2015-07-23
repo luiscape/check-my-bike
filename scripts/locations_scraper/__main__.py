@@ -10,10 +10,8 @@ sys.path.append(dir)
 from utilities.prompt_format import item
 from locations_scraper.scraper import Main as ScraperMain
 
-
 def Main():
   '''Wrapper.'''
-
   ScraperMain()
 
 
