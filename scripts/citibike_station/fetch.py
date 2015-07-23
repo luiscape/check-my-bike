@@ -54,13 +54,17 @@ def FetchLatestStationData(verbose=True):
       #
       # Adding additional data.
       #
-      record['weekDay'] = Process.CalculateWeekNumber(data['executionTime'])
+      record['week'] = Process.CalculateWeekNumber(data['executionTime'])
+      record['weekDay'] = Process.CalculateWeekDayNumber(data['executionTime'])
       record['day'] = Process.FormatDay(data['executionTime'])
       record['executionTime'] = Process.FormatDate(data['executionTime'])
       record['lastCommunicationTime'] = Process.FormatDate(record['lastCommunicationTime'])
       record['availableDocksRatio'] = Process.CalculateRatio(record['availableDocks'], record['totalDocks'])
       record['availableBikesRatio'] = Process.CalculateRatio(record['availableBikes'], record['totalDocks'])
 
+      #
+      # Append results to an array.
+      #
       record_array.append(record)
 
     if StoreRecords(data=record_array, table='metric', verbose=True) == False:
