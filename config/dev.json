@@ -15,7 +15,18 @@
         { "field_name": "availableDocksRatio" , "type": "REAL" },
         { "field_name": "availableBikesRatio" , "type": "REAL" }
      ]
-    },{
+    },
+    {
+    "name": "forecast",
+    "primary_key": ["id", "executionTime"],
+    "fields": [
+        { "field_name": "id" , "type": "INTEGER" },
+        { "field_name": "executionTime" , "type": "TEXT" },
+        { "field_name": "availableDocksRatio" , "type": "REAL" },
+        { "field_name": "availableBikesRatio" , "type": "REAL" }
+     ]
+    },
+    {
     "name": "station",
     "primary_key": ["id"],
     "fields": [
