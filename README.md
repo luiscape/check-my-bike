@@ -4,11 +4,11 @@ Collector for CitiBike's public data. It runs on a highly redundant schedule (4 
 [![Build Status](https://travis-ci.org/rolltime/rolltime-collect.svg?branch=master)](https://travis-ci.org/rolltime/rolltime-collect)
 
 
-## Build and Run
+## Setup and Run
 To build, test, and run the application locally, run:
 
 ```
-$ make build
+$ make setup
 $ make test
 $ make run
 ```
