@@ -11,4 +11,9 @@ pip install -r requirements.txt
 # Configuring application.
 #
 python scripts/setup_app/
-python scripts/locations_scraper/
+
+#
+# Collect data about
+# different locations.
+#
+# python scripts/locations_scraper/
