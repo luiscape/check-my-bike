@@ -9,16 +9,18 @@ import sys
 dir = os.path.split(os.path.split(os.path.realpath(__file__))[0])[0]
 sys.path.append(dir)
 
-import scraperwiki
+import psycopg2
 import progressbar as pb
 
 from utilities.prompt_format import item
 from utilities.load_config import LoadConfig
 
 def StoreRecords(data, table, progress_bar=False, verbose=False):
-  '''Store records in a ScraperWiki database.'''
+  '''Store records in a PostgreSQL database.'''
 
+  #
   # Available schemas.
+  #
   database = LoadConfig('dev.json')['database']
   schemas = {}
   for schema in database:
@@ -42,7 +44,8 @@ def StoreRecords(data, table, progress_bar=False, verbose=False):
 
   try:
     for record in data:
-      print record
+
+      s = ''
       scraperwiki.sqlite.save(record.keys(), record, table_name=table)
 
   except Exception as e:

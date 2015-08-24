@@ -11,9 +11,10 @@ sys.path.append(dir)
 from utilities.prompt_format import item
 from utilities.load_config import LoadConfig
 
+HOST_DATABASE = os.environ.get('HOST_DATABASE')
 
 def CreateDbAndTable(config_file='dev.json', verbose=True):
-  '''Creating tables in SQLite database.'''
+  '''Creating tables in PostgreSQL database.'''
 
   #
   # Loading database information
@@ -25,7 +26,7 @@ def CreateDbAndTable(config_file='dev.json', verbose=True):
   # TODO: add environment variables
   # to these default values.
   #
-  conn = psycopg2.connect(host='HOSTNAME_HERE', dbname='rolltime', user='rolltime', password='rolltime')
+  conn = psycopg2.connect(host=HOST_DATABASE, dbname='rolltime', user='rolltime', password='rolltime')
   cur = conn.cursor()
 
   #
