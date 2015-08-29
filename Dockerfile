@@ -17,6 +17,6 @@ RUN \
   && cd rolltime-collect \
   && make setup
 
-WORKDIR "/rolltime-collect"
+# WORKDIR "/rolltime-collect"
 
 CMD ["make", "configure", "&&", "make", "run"]
