@@ -20,31 +20,6 @@ HOST_DATABASE = os.environ.get('HOST_DATABASE')
 def StoreRecords(data, table, progress_bar=False, verbose=False):
   '''Store records in a PostgreSQL database.'''
 
-  # #
-  # # Available schemas.
-  # #
-  # database = LoadConfig('dev.json')['database']
-  # schemas = {}
-  # for schema in database:
-  #   field_names = []
-  #   for field in schema['fields']:
-  #     field_names.append(field['field_name'])
-
-  #   schemas[schema['name']] = field_names
-
-
-  # try:
-  #   schema = schemas[table]
-
-  # except Exception as e:
-  #   if verbose is True:
-  #     print "%s select one of the following tables: %s." % (item('prompt_error'), ", ".join(schemas.keys()))
-  #     print e
-
-  #   print '%s Could not find schema.' % item('prompt_error')
-  #   return False
-
-
   #
   # TODO: add environment variables
   # to these default values.
