@@ -12,7 +12,7 @@ if __name__ == '__main__':
 
   print '--------------------------'
   print '|    %s    |' % color("ROLLTIME COLLECT", "blue", attrs=['bold'])
-  print '|       [ %s ]      |' % color("v.0.1.0", "yellow", attrs=['bold'])
+  print '|       [ %s ]      |' % color("v.0.1.1", "yellow", attrs=['bold'])
   print '--------------------------'
 
   run_scheduler.RunScheduler()
