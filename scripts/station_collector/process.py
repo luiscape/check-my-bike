@@ -53,7 +53,21 @@ def CalculateWeekNumber(s, verbose=True):
       return str(s)
 
 
-def CalculateRatio(a, b, verbose=True):
+def CalculateWeekDayNumber(s, verbose=True):
+  '''Format a single date entry into the desired Rolltime format.'''
+
+  try:
+    d = datetime.strptime(s, '%Y-%m-%d %X %p').weekday()
+    return int(d)
+
+  except Exception as e:
+    if verbose:
+      print '%s Failed to fetch the week number: %s' % (item('prompt_warn'), s)
+      print e
+      return str(s)
+
+
+def CalculateRatio(a, b, verbose=False):
   '''Calculates the three basic rations we are currently using.'''
 
   try:

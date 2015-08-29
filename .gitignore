@@ -9,3 +9,5 @@ config/secrets.json
 *.sqlite-journal
 .DS_Store
 .Rhistory
+
+.coverage

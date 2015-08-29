@@ -19,6 +19,9 @@ def FetchLatestStationData(verbose=True):
   if verbose:
     print '%s Fetching station data.' % item('prompt_bullet')
 
+  #
+  # TODO: make this URL relative.
+  #
   u = 'http://www.citibikenyc.com/stations/json'
   r = requests.get(u)
 
@@ -28,6 +31,10 @@ def FetchLatestStationData(verbose=True):
 
   else:
     data = r.json()
+
+    def _none_check(v):
+      '''Checks for None values. Inserts 0 instead.'''
+      print 'None'
 
     #
     # Schema of the database

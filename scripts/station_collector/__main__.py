@@ -8,7 +8,6 @@ dir = os.path.split(os.path.split(os.path.realpath(__file__))[0])[0]
 sys.path.append(dir)
 
 from utilities.prompt_format import item
-from utilities.store_records import StoreRecords
 
 from citibike_station.fetch import FetchLatestStationData
 

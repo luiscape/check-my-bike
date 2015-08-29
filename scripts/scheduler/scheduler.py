@@ -9,13 +9,13 @@ import schedule
 dir = os.path.split(os.path.split(os.path.realpath(__file__))[0])[0]
 sys.path.append(dir)
 
-from citibike_station.check import FetchLatestStationData
+from station_collector.fetch import FetchLatestStationData
 from utilities.prompt_format import item
 
 #
 # Schedule
 #
-schedule.every(1).minutes.do(FetchLatestStationData)
+schedule.every(30).seconds.do(FetchLatestStationData)
 
 def Main(verbose=True):
   '''Wrapper to run all the scheduled tasks.'''

@@ -3,7 +3,7 @@
 
 import os
 import sys
-import scraperwiki
+import psycopg2
 
 dir = os.path.split(os.path.split(os.path.realpath(__file__))[0])[0]
 sys.path.append(dir)
@@ -11,15 +11,23 @@ sys.path.append(dir)
 from utilities.prompt_format import item
 from utilities.load_config import LoadConfig
 
+HOST_DATABASE = os.environ.get('HOST_DATABASE')
 
 def CreateDbAndTable(config_file='dev.json', verbose=True):
-  '''Creating tables in SQLite database.'''
+  '''Creating tables in PostgreSQL database.'''
 
   #
   # Loading database information
   # from config file.
   #
   database = LoadConfig(config_file)['database']
+
+  #
+  # TODO: add environment variables
+  # to these default values.
+  #
+  conn = psycopg2.connect(host=HOST_DATABASE, dbname='rolltime', user='rolltime', password='rolltime')
+  cur = conn.cursor()
 
   #
   # Build each table.
@@ -40,8 +48,8 @@ def CreateDbAndTable(config_file='dev.json', verbose=True):
     # Make statements to the database.
     #
     try:
-      scraperwiki.sqlite.execute(statement)
-      scraperwiki.sqlite._State.new_transaction()
+      cur.execute(statement)
+      conn.commit()
       print "%s table `%s` created." % (item('prompt_bullet'), str(table['name']))
 
     except Exception as e:
@@ -49,6 +57,12 @@ def CreateDbAndTable(config_file='dev.json', verbose=True):
       if verbose:
         print e
       return False
+
+  #
+  # Close communication.
+  #
+  cur.close()
+  conn.close()
 
 
 if __name__ == '__main__':
