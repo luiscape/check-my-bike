@@ -16,3 +16,12 @@ $ make run
 
 ## Docker Setup
 This collector is designed to run on a Docker container. Please refer to the `Dockerfile` for the inner-workings of the application. The container must be run with no local volumes, but with a link to a `PosgreSQL` container.
+
+```shell
+$ docker run \
+  -d
+  --name collector \
+  --link postgres:postgres \
+  -e HOST_DATABASE=[POSTGRESQL_TSL_ADDRESS] \
+  rolltime/rolltime-collect:v.0.1.1
+```
