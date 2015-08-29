@@ -16,4 +16,4 @@ python scripts/setup_app/
 # Collect data about
 # different locations.
 #
-# python scripts/locations_scraper/
+python scripts/locations_scraper/
