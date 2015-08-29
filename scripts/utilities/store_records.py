@@ -30,8 +30,12 @@ def StoreRecords(data, table, progress_bar=False, verbose=False):
   try:
     for record in data:
 
+      #
+      # TODO: Check that this last statement
+      # is supported by PostgreSQL 9.5
+      #
       c = 'INSERT INTO {table} ({columns}) '.format(table=table, columns=",".join(record.keys()))
-      v = 'VALUES ({values})'.format(values="'" + "','".join(str(v) for v in record.values()) + "'")
+      v = 'VALUES ({values}) ON CONFLICT UPDATE'.format(values="'" + "','".join(str(v) for v in record.values()) + "'")
       cur.execute(c + v)
 
     #
