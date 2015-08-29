@@ -31,11 +31,19 @@ def StoreRecords(data, table, progress_bar=False, verbose=False):
     for record in data:
 
       #
-      # TODO: Check that this last statement
+      # Check no NULL values are passed.
+      #
+      for key in record.keys():
+        if record.get(key) is None:
+          record.pop(key)
+
+      #
+      # TODO: Check that the upsert statement
       # is supported by PostgreSQL 9.5
       #
       c = 'INSERT INTO {table} ({columns}) '.format(table=table, columns=",".join(record.keys()))
-      v = 'VALUES ({values}) ON CONFLICT UPDATE'.format(values="'" + "','".join(str(v) for v in record.values()) + "'")
+      # v = 'VALUES ({values}) ON CONFLICT UPDATE'.format(values="'" + "','".join(str(v) for v in record.values()) + "'")
+      v = 'VALUES ({values})'.format(values="'" + "','".join(str(v) for v in record.values()) + "'")
       cur.execute(c + v)
 
     #
@@ -46,8 +54,13 @@ def StoreRecords(data, table, progress_bar=False, verbose=False):
     cur.close()
     conn.close()
 
-
   except Exception as e:
-    print "%s Failed to store record in database." % item('prompt_error')
-    print e
-    return False
+    if e.pgcode == '23505':
+      print '%s Record already exists. Skipping.' % item('prompt_warn')
+      return
+
+    else:
+      if verbose:
+        print "%s Failed to store record in database." % item('prompt_error')
+        print 'PosgreSQL error code: %s' % e.pgcode
+      return False
