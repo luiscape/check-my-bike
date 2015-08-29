@@ -15,6 +15,8 @@ $ make run
 
 
 ## Docker Setup
+[![](https://badge.imagelayers.io/luiscape/rolltime-collect:latest.svg)](https://imagelayers.io/?images=luiscape/rolltime-collect:latest 'Get your own badge on imagelayers.io')
+
 This collector is designed to run on a Docker container. Please refer to the `Dockerfile` for the inner-workings of the application. The container must be run with no local volumes, but with a link to a `PosgreSQL` container.
 
 ```shell
