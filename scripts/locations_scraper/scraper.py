@@ -21,6 +21,8 @@ from utilities.store_records import StoreRecords
 def ScrapeMotivateWebsite(verbose=True):
   '''Scrapes the Motivate website for information about their bike sharing programs.'''
 
+  print "%s Scraping Motivate's website for program metadata." % item('prompt_bullet')
+
   #
   # Load config data.
   #
