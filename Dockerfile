@@ -29,11 +29,3 @@ RUN \
 WORKDIR "/rolltime-collect"
 
 CMD ["make", "configure", "&&", "make", "run"]
-
-
-docker run \
-  -d \
-  --name collector \
-  --link postgres:postgres \
-  -e HOST_DATABASE='1.1.1.1' \
-  test/test:test
