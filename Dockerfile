@@ -28,4 +28,4 @@ RUN \
 
 WORKDIR "/rolltime-collect"
 
-CMD ["make", "configure", "&&", "make", "run"]
+CMD ["make", "configure"]

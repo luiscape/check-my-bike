@@ -13,3 +13,9 @@ python scripts/setup_app/
 # different locations.
 #
 python scripts/locations_scraper/
+
+
+#
+# Run application.
+#
+python app/
