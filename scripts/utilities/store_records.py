@@ -15,7 +15,7 @@ import progressbar as pb
 from utilities.prompt_format import item
 from utilities.load_config import LoadConfig
 
-HOST_DATABASE = os.environ.get('HOST_DATABASE')
+HOST_DATABASE = os.environ.get('POSTGRES_PORT_5432_TCP_ADDR')
 
 def StoreRecords(data, table, progress_bar=False, verbose=False):
   '''Store records in a PostgreSQL database.'''

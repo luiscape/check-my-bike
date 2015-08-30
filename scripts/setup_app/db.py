@@ -11,7 +11,7 @@ sys.path.append(dir)
 from utilities.prompt_format import item
 from utilities.load_config import LoadConfig
 
-HOST_DATABASE = os.environ.get('HOST_DATABASE')
+HOST_DATABASE = os.environ.get('POSTGRES_PORT_5432_TCP_ADDR')
 
 def CreateDbAndTable(config_file='dev.json', verbose=True):
   '''Creating tables in PostgreSQL database.'''
