@@ -23,7 +23,18 @@ def FetchLatestStationData(verbose=True):
   # TODO: make this URL relative.
   #
   u = 'http://www.citibikenyc.com/stations/json'
-  r = requests.get(u)
+
+  #
+  # At times, server returns wrong encoding.
+  # This makes sure that the server doesn't
+  # crash.
+  #
+  try:
+    r = requests.get(u)
+
+  except Exception as e:
+    print '%s Something went wrong checking for data.' % item('prompt_error')
+    return False
 
   if not r.ok:
     print '%s Something went wrong checking for data.' % item('prompt_error')
