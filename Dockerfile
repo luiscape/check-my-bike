@@ -14,9 +14,10 @@ MAINTAINER Luis Capelo <luiscape@gmail.com>
 #
 RUN \
   git clone https://github.com/rolltime/rolltime-collect \
-  && cd rolltime-collect \
-  && make setup
+  && cd rolltime-collect
 
-# WORKDIR "/rolltime-collect"
+WORKDIR "/rolltime-collect"
+
+RUN make setup
 
 CMD ["make", "configure", "&&", "make", "run"]
