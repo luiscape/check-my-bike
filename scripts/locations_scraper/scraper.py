@@ -84,24 +84,6 @@ def ScrapeMotivateWebsite(verbose=True):
     return False
 
 
-#
-# Function deprecated. Candidate for deletion soon.
-#
-def StoreOutput(data, json_path, verbose=True):
-  '''Store the output into the local configuration JSON file.'''
-
-  try:
-    with open(json_path, 'w') as out_file:
-       json.dump(data, out_file)
-
-    print '%s Stored data in JSON successfully.\n' % item('prompt_success')
-
-  except Exception as e:
-    print '%s Failed to store data in JSON.' % item('prompt_error')
-    print e
-    return False
-
-
 def Main():
   '''Wrapper.'''
 
@@ -126,5 +108,3 @@ def Main():
 
     print '%s Scraped program / location data successfully.\n' % item('prompt_success')
 
-if __name__ == '__main__':
-  Main()
