@@ -5,17 +5,20 @@ import os
 import sys
 import mock
 import unittest
-import scraperwiki
 from mock import patch
 
 from scripts.utilities import load_config as Config
+# from scripts.utilities import store_records as StoreRecords
 
 
-class CheckLoadConfig(unittest.TestCase):
+class TestLoadConfig(unittest.TestCase):
   '''Testing the process of creating a database.'''
 
   def test_load_config_doesnt_fail(self):
     assert Config.LoadConfig('dev.json', True) != False
+
+  def test_wrong_config_files_folder_fails(self):
+    assert Config.LoadConfig('foo.json', True) == False
 
   def test_config_files_have_correct_structure(self):
 
@@ -58,5 +61,10 @@ class CheckLoadConfig(unittest.TestCase):
         assert f in city.keys()
 
 
+# class TestStoreRecords(unittest.TestCase):
+#   '''Unit tests for the record storing API.'''
 
+#   def test_store_record_fails_with_faulty_record(self):
+#     data = {'foo': 1, 'bar': 2}
+#     assert StoreRecords(data=data, table='metric')
 

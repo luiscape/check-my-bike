@@ -5,7 +5,6 @@
 # import sys
 # import mock
 # import unittest
-# import scraperwiki
 # from mock import patch
 
 # from scripts.utilities import db as DB
