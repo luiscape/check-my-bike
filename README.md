@@ -25,5 +25,6 @@ $ docker run \
   --name collector \
   --link postgres:postgres \
   -e HOST_DATABASE=[POSTGRESQL_TSL_ADDRESS] \
-  rolltime/rolltime-collect:v.0.1.1
+  -e NODE_ID=collector-newyork-01 \
+  rolltime/rolltime-collect:v.0.1.2
 ```
