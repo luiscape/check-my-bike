@@ -27,6 +27,5 @@ def Main():
   print '%s Database configured successfully.\n' % item('prompt_success')
 
 
-
 if __name__ == '__main__':
   Main()
