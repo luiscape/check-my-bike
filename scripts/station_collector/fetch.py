@@ -9,6 +9,7 @@ dir = os.path.split(os.path.split(os.path.realpath(__file__))[0])[0]
 sys.path.append(dir)
 
 import process as Process
+from status.send import SendStatus
 from utilities.prompt_format import item
 from utilities.store_records import StoreRecords
 
@@ -84,6 +85,8 @@ def FetchLatestStationData(verbose=True):
       # Append results to an array.
       #
       record_array.append(record)
+
+    SendStatus('ok')
 
     if StoreRecords(data=record_array, table='metric', verbose=True) == False:
       return False
