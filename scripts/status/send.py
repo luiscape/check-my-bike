@@ -20,7 +20,7 @@ NODE_ID = os.getenv('NODE_ID', None)
 # NODE_WATCH_ADDR = os.getenv('NODE_WATCH_PORT_27017_TCP_ADDR', 'http://localhost:9000')
 NODE_WATCH_ADDR = 'http://node_watch:9000'  # Experimenting with Docker variables.
 
-def SendStatus(status=None, id=NODE_ID, time=NOW):
+def SendStatus(status=None, id=NODE_ID, time=NOW, address=NODE_WATCH_ADDR):
   '''Sending status to the node watching service.'''
 
   if status == 'error':
@@ -37,6 +37,14 @@ def SendStatus(status=None, id=NODE_ID, time=NOW):
   }
 
   print '%s Sending notification to Node Watch.' % item('prompt_ping')
-  r = requests.post(NODE_WATCH_ADDR, data=payload)
-  if r.json()['success'] == False:
-    print r.json()
+
+  try:
+    r = requests.post(address, data=payload)
+    if r.json()['success'] == False:
+      print r.json()
+
+  except Exception as e:
+    print '%s Could not send notification to Node Watch.'
+    print payload
+    print e
+    return False
