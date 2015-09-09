@@ -23,8 +23,8 @@ This collector is designed to run on a Docker container. Please refer to the `Do
 $ docker run \
   -d
   --name collector \
+  --link node_watch:node_watch \
   --link postgres:postgres \
-  -e HOST_DATABASE=[POSTGRESQL_TSL_ADDRESS] \
   -e NODE_ID=collector-newyork-01 \
-  rolltime/rolltime-collect:v.0.1.2
+  rolltime/rolltime-collect:latest
 ```
