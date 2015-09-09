@@ -9,8 +9,8 @@ source venv/bin/activate
 python scripts/setup_app/
 
 #
-# Collect data about
-# different locations.
+# Collect data from
+# different location programs.
 #
 python scripts/locations_scraper/
 
