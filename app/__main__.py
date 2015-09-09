@@ -5,7 +5,7 @@ import sys
 import run_scheduler
 from termcolor import colored as color
 
-__version__ = "v.0.2.0"
+__version__ = "v.0.2.1"
 
 #
 # Run the scheduler.
