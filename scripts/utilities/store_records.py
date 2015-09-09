@@ -48,7 +48,7 @@ def StoreRecords(data, table, progress_bar=False, verbose=False):
 
     #
     # Commit all records.
-    # And close connection.
+    # And close cursor and connection.
     #
     conn.commit()
     cur.close()
