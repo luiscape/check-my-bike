@@ -17,7 +17,7 @@ from utilities.prompt_format import item
 #
 NOW = datetime.now().isoformat(str('T'))
 NODE_ID = os.getenv('NODE_ID', None)
-NODE_WATCH_ADDR = os.getenv('NODE_WATCH_ADDR', 'http://localhost:9000')
+NODE_WATCH_ADDR = os.getenv('NODE_WATCH_PORT_27017_TCP_ADDR', 'http://localhost:9000')
 
 def SendStatus(status=None, id=NODE_ID, time=NOW):
   '''Sending status to the node watching service.'''
