@@ -43,54 +43,82 @@ def FetchLatestStationData(verbose=True):
 
   else:
     data = r.json()
+    return data
 
-    def _none_check(v):
-      '''Checks for None values. Inserts 0 instead.'''
-      print 'None'
+
+def ProcessStationData(data=None):
+  '''Processees the collected station data; cleans.'''
+
+  #
+  # Iterates over every record,
+  # processing each with appropriate
+  # time stamps, ratios, and alike.
+  #
+  record_array = []
+  for record in data['stationBeanList']:
 
     #
-    # Schema of the database
-    # has to be defined properly.
-    # Right now everything is text
-    # and thigs are, as expected, not
-    # working as planned.
+    # Filtering record for
+    # data of interest.
     #
-    record_array = []
-    for record in data['stationBeanList']:
+    record = {
+       'id': int(record['id']),
+       'totalDocks': int(record['totalDocks']),
+       'availableDocks': int(record['availableDocks']),
+       'availableBikes': int(record['availableBikes']),
+       'lastCommunicationTime': str(record['lastCommunicationTime'])
+       }
 
-      #
-      # Filtering record for
-      # data of interest.
-      #
-      record = {
-         'id': int(record['id']),
-         'totalDocks': int(record['totalDocks']),
-         'availableDocks': int(record['availableDocks']),
-         'availableBikes': int(record['availableBikes']),
-         'lastCommunicationTime': str(record['lastCommunicationTime'])
-         }
+    #
+    # Adding additional data.
+    #
+    record['week'] = Process.CalculateWeekNumber(data['executionTime'])
+    record['weekDay'] = Process.CalculateWeekDayNumber(data['executionTime'])
+    record['day'] = Process.FormatDay(data['executionTime'])
+    record['executionTime'] = Process.FormatDate(data['executionTime'])
+    record['lastCommunicationTime'] = Process.FormatDate(record['lastCommunicationTime'])
+    record['availableDocksRatio'] = Process.CalculateRatio(record['availableDocks'], record['totalDocks'])
+    record['availableBikesRatio'] = Process.CalculateRatio(record['availableBikes'], record['totalDocks'])
 
-      #
-      # Adding additional data.
-      #
-      record['week'] = Process.CalculateWeekNumber(data['executionTime'])
-      record['weekDay'] = Process.CalculateWeekDayNumber(data['executionTime'])
-      record['day'] = Process.FormatDay(data['executionTime'])
-      record['executionTime'] = Process.FormatDate(data['executionTime'])
-      record['lastCommunicationTime'] = Process.FormatDate(record['lastCommunicationTime'])
-      record['availableDocksRatio'] = Process.CalculateRatio(record['availableDocks'], record['totalDocks'])
-      record['availableBikesRatio'] = Process.CalculateRatio(record['availableBikes'], record['totalDocks'])
+    #
+    # Append results to an array.
+    #
+    record_array.append(record)
 
-      #
-      # Append results to an array.
-      #
-      record_array.append(record)
 
-    SendStatus('ok')
+  #
+  # Returns record collection.
+  #
+  return record_array
 
-    if StoreRecords(data=record_array, table='metric', verbose=True) == False:
+
+def Main():
+  '''Program wrapper.'''
+
+  #
+  # Tries to collect, parse data
+  # and store results in database.
+  #
+  try:
+    data = FetchLatestStationData()
+    processed_data = ProcessStationData(data=data)
+
+    #
+    # Stores record in database.
+    #
+    if StoreRecords(data=processed_data, table='metric', verbose=True) == False:
       return False
 
+    #
+    # Pings node watch
+    # with time stamp and status.
+    #
+    SendStatus('ok')
 
-if __name__ == '__main__':
-  FetchLatestStationData()
+  #
+  # If it fails, will ping
+  # node watch with status.
+  #
+  except Exception as e:
+    SendStatus('error')
+
