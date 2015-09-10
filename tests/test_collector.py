@@ -11,7 +11,7 @@ from scripts.utilities import load_config as Config
 from scripts.station_collector import fetch as Fetch
 from scripts.station_collector import process as Process
 
-class TestFetchDAta(unittest.TestCase):
+class TestFetchData(unittest.TestCase):
   '''Testing that data is fetched successfully.'''
 
   def test_that_default_parameters_dont_fail(self):
